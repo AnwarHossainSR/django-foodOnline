@@ -23,7 +23,8 @@ class Migration(migrations.Migration):
                         verbose_name="ID",
                     ),
                 ),
-                ("password", models.CharField(max_length=128, verbose_name="password")),
+                ("password",
+                 models.CharField(max_length=128, verbose_name="password")),
                 ("username", models.CharField(max_length=30, unique=True)),
                 ("email", models.EmailField(max_length=60, unique=True)),
                 ("first_name", models.CharField(max_length=30)),
@@ -39,11 +40,13 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "date_joined",
-                    models.DateTimeField(auto_now_add=True, verbose_name="date joined"),
+                    models.DateTimeField(auto_now_add=True,
+                                         verbose_name="date joined"),
                 ),
                 (
                     "last_login",
-                    models.DateTimeField(auto_now=True, verbose_name="last login"),
+                    models.DateTimeField(auto_now=True,
+                                         verbose_name="last login"),
                 ),
                 ("created_date", models.DateTimeField(auto_now_add=True)),
                 ("modified_date", models.DateTimeField(auto_now=True)),
@@ -55,7 +58,8 @@ class Migration(migrations.Migration):
                     "groups",
                     models.ManyToManyField(
                         blank=True,
-                        help_text="The groups this user belongs to. A user will get all permissions granted to each of their groups.",
+                        help_text=
+                        "The groups this user belongs to. A user will get all permissions granted to each of their groups.",
                         related_name="user_set",
                         related_query_name="user",
                         to="auth.group",
