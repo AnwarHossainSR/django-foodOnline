@@ -7,9 +7,9 @@ from django.contrib.auth.models import AbstractUser, BaseUserManager
 class UserManager(BaseUserManager):
     def create_user(self, first_name, last_name, username, email, password=None):
         if not email:
-            raise ValueError('Users must have an email address')
+            raise ValueError("Users must have an email address")
         if not username:
-            raise ValueError('Users must have an username')
+            raise ValueError("Users must have an username")
 
         user = self.model(
             email=self.normalize_email(email),
@@ -43,8 +43,8 @@ class User(AbstractUser):
     CUSTOMER = 2
 
     ROLE_CHOICE = (
-        (RESTAURANT, 'Restaurant'),
-        (CUSTOMER, 'Customer'),
+        (RESTAURANT, "Restaurant"),
+        (CUSTOMER, "Customer"),
     )
 
     username = models.CharField(max_length=30, unique=True)
@@ -52,11 +52,9 @@ class User(AbstractUser):
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     phone_number = models.CharField(max_length=15, blank=True)
-    role = models.PositiveSmallIntegerField(
-        choices=ROLE_CHOICE, blank=True, null=True)
-    date_joined = models.DateTimeField(
-        verbose_name='date joined', auto_now_add=True)
-    last_login = models.DateTimeField(verbose_name='last login', auto_now=True)
+    role = models.PositiveSmallIntegerField(choices=ROLE_CHOICE, blank=True, null=True)
+    date_joined = models.DateTimeField(verbose_name="date joined", auto_now_add=True)
+    last_login = models.DateTimeField(verbose_name="last login", auto_now=True)
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
 
@@ -65,8 +63,8 @@ class User(AbstractUser):
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
 
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username', 'first_name', 'last_name']
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = ["username", "first_name", "last_name"]
 
     objects = UserManager()
 
@@ -83,9 +81,11 @@ class User(AbstractUser):
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     profile_picture = models.ImageField(
-        upload_to='users/profile_pictures', blank=True, null=True)
+        upload_to="users/profile_pictures", blank=True, null=True
+    )
     cover_photo = models.ImageField(
-        upload_to='users/cover_photos', blank=True, null=True)
+        upload_to="users/cover_photos", blank=True, null=True
+    )
     address_line_1 = models.CharField(max_length=50, blank=True, null=True)
     address_line_2 = models.CharField(max_length=50, blank=True, null=True)
     city = models.CharField(max_length=30, blank=True, null=True)
