@@ -25,15 +25,15 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "profile_picture",
-                    models.ImageField(
-                        blank=True, null=True, upload_to="users/profile_pictures"
-                    ),
+                    models.ImageField(blank=True,
+                                      null=True,
+                                      upload_to="users/profile_pictures"),
                 ),
                 (
                     "cover_photo",
-                    models.ImageField(
-                        blank=True, null=True, upload_to="users/cover_photos"
-                    ),
+                    models.ImageField(blank=True,
+                                      null=True,
+                                      upload_to="users/cover_photos"),
                 ),
                 (
                     "address_line_1",
@@ -43,12 +43,18 @@ class Migration(migrations.Migration):
                     "address_line_2",
                     models.CharField(blank=True, max_length=50, null=True),
                 ),
-                ("city", models.CharField(blank=True, max_length=30, null=True)),
-                ("pin_code", models.CharField(blank=True, max_length=30, null=True)),
-                ("country", models.CharField(blank=True, max_length=30, null=True)),
-                ("zip_code", models.CharField(blank=True, max_length=10, null=True)),
-                ("latitude", models.CharField(blank=True, max_length=30, null=True)),
-                ("longitude", models.CharField(blank=True, max_length=30, null=True)),
+                ("city", models.CharField(blank=True, max_length=30,
+                                          null=True)),
+                ("pin_code",
+                 models.CharField(blank=True, max_length=30, null=True)),
+                ("country",
+                 models.CharField(blank=True, max_length=30, null=True)),
+                ("zip_code",
+                 models.CharField(blank=True, max_length=10, null=True)),
+                ("latitude",
+                 models.CharField(blank=True, max_length=30, null=True)),
+                ("longitude",
+                 models.CharField(blank=True, max_length=30, null=True)),
                 ("created_at", models.DateTimeField(auto_now_add=True)),
                 ("modified_at", models.DateTimeField(auto_now=True)),
                 (

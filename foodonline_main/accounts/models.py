@@ -6,7 +6,13 @@ from django.db import models
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, first_name, last_name, username, email, password=None):
+
+    def create_user(self,
+                    first_name,
+                    last_name,
+                    username,
+                    email,
+                    password=None):
         if not email:
             raise ValueError("Users must have an email address")
         if not username:
@@ -23,7 +29,8 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, first_name, last_name, username, email, password):
+    def create_superuser(self, first_name, last_name, username, email,
+                         password):
         user = self.create_user(
             email=self.normalize_email(email),
             password=password,
@@ -53,8 +60,11 @@ class User(AbstractUser):
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     phone_number = models.CharField(max_length=15, blank=True)
-    role = models.PositiveSmallIntegerField(choices=ROLE_CHOICE, blank=True, null=True)
-    date_joined = models.DateTimeField(verbose_name="date joined", auto_now_add=True)
+    role = models.PositiveSmallIntegerField(choices=ROLE_CHOICE,
+                                            blank=True,
+                                            null=True)
+    date_joined = models.DateTimeField(verbose_name="date joined",
+                                       auto_now_add=True)
     last_login = models.DateTimeField(verbose_name="last login", auto_now=True)
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
@@ -81,12 +91,12 @@ class User(AbstractUser):
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    profile_picture = models.ImageField(
-        upload_to="users/profile_pictures", blank=True, null=True
-    )
-    cover_photo = models.ImageField(
-        upload_to="users/cover_photos", blank=True, null=True
-    )
+    profile_picture = models.ImageField(upload_to="users/profile_pictures",
+                                        blank=True,
+                                        null=True)
+    cover_photo = models.ImageField(upload_to="users/cover_photos",
+                                    blank=True,
+                                    null=True)
     address_line_1 = models.CharField(max_length=50, blank=True, null=True)
     address_line_2 = models.CharField(max_length=50, blank=True, null=True)
     city = models.CharField(max_length=30, blank=True, null=True)
