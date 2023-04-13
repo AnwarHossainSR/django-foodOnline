@@ -32,6 +32,7 @@ def registerUser(request):
             return redirect("registerUser")
         else:
             print(form.errors)
-    form = UserForm()
+    else:
+        form = UserForm()
     context = {"form": form}
     return render(request, "accounts/registerUser.html", context)
