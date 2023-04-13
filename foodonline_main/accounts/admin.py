@@ -17,7 +17,7 @@ class CustomUserAdmin(UserAdmin):
         "last_name",
         "role",
     )
-    ordering = ("-date_joined",)
+    ordering = ("-date_joined", )
     filter_horizontal = ()
     list_filter = ()
     fieldsets = ()
