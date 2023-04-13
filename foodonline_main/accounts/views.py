@@ -1,8 +1,8 @@
-from django.shortcuts import redirect, render
-
-from .models import User
+from django.shortcuts import redirect
+from django.shortcuts import render
 
 from .forms import UserForm
+from .models import User
 
 # Create your views here.
 
@@ -32,6 +32,7 @@ def registerUser(request):
             return redirect("registerUser")
         else:
             print(form.errors)
-    form = UserForm()
+    else:
+        form = UserForm()
     context = {"form": form}
     return render(request, "accounts/registerUser.html", context)
