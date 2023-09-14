@@ -1,3 +1,7 @@
 {
-  "cSpell.words": ["foodonline"]
+  "cSpell.words": ["foodonline"],
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.autopep8"
+  },
+  "python.formatting.provider": "none"
 }
