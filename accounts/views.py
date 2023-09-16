@@ -3,6 +3,7 @@ from django.shortcuts import redirect, render
 from accounts.form import UserForm
 from accounts.models import User, UserProfile
 from django.contrib import messages, auth
+from accounts.utils import detectUser
 from vendor.forms import VendorForm
 
 # Create your views here.
@@ -93,14 +94,8 @@ def login(request):
 
         if user is not None:
             auth.login(request, user)
-            if request.user.is_superadmin:
-                auth.logout(request)
-                messages.warning(
-                    request, 'You are not allowed to login here! Please login from admin panel.')
-                return redirect('login')
-            else:
-                messages.success(request, 'You are now logged in.')
-                return redirect('myAccount')
+            messages.success(request, 'You are now logged in.')
+            return redirect('myAccount')
         else:
             messages.error(request, 'Invalid login credentials')
             return redirect('login')
@@ -118,7 +113,15 @@ def logout(request):
 
 
 def myAccount(request):
-    return render(request, 'accounts/myAccount.html')
+    user = request.user
+    redirectUrl = detectUser(user)
+    return redirect(redirectUrl)
+
+def custDashboard(request):
+    return render(request, 'accounts/custDashboard.html')
+
+def vendorDashboard(request):
+    return render(request, 'accounts/vendorDashboard.html')
 
 
 def forgotPassword(request):
