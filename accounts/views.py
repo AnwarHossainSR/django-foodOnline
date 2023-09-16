@@ -2,7 +2,7 @@ from django.shortcuts import redirect, render
 
 from accounts.form import UserForm
 from accounts.models import User, UserProfile
-from django.contrib import messages
+from django.contrib import messages, auth
 from vendor.forms import VendorForm
 
 # Create your views here.
@@ -82,6 +82,22 @@ def registerVendor(request):
 
 
 def login(request):
+    if request.user.is_authenticated:
+        messages.warning(request, 'You are already logged in!')
+        return redirect('myAccount')
+    elif request.method == 'POST':
+        email = request.POST['email']
+        password = request.POST['password']
+
+        user = auth.authenticate(email=email, password=password)
+
+        if user is not None:
+            auth.login(request, user)
+            messages.success(request, 'You are now logged in.')
+            return redirect('myAccount')
+        else:
+            messages.error(request, 'Invalid login credentials')
+            return redirect('login')
     return render(request, 'accounts/login.html')
 
 
@@ -89,8 +105,9 @@ def logout(request):
     return
 
 
-def dashbord(request):
-    return
+def myAccount(request):
+    return render(request, 'accounts/myAccount.html')
+
 
 def forgotPassword(request):
     return
