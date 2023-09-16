@@ -93,8 +93,14 @@ def login(request):
 
         if user is not None:
             auth.login(request, user)
-            messages.success(request, 'You are now logged in.')
-            return redirect('myAccount')
+            if request.user.is_superadmin:
+                auth.logout(request)
+                messages.warning(
+                    request, 'You are not allowed to login here! Please login from admin panel.')
+                return redirect('login')
+            else:
+                messages.success(request, 'You are now logged in.')
+                return redirect('myAccount')
         else:
             messages.error(request, 'Invalid login credentials')
             return redirect('login')
@@ -102,7 +108,13 @@ def login(request):
 
 
 def logout(request):
-    return
+    if request.user.is_authenticated:
+        auth.logout(request)
+        messages.success(request, 'You are now logged out.')
+        return redirect('login')
+    else:
+        messages.warning(request, 'You are not logged in!')
+        return redirect('login')
 
 
 def myAccount(request):
