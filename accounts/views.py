@@ -3,7 +3,7 @@ from django.shortcuts import redirect, render
 from accounts.form import UserForm
 from accounts.models import User, UserProfile
 from django.contrib import messages, auth
-from accounts.utils import detectUser
+from accounts.utils import detectUser, send_verification_email
 from vendor.forms import VendorForm
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.exceptions import PermissionDenied
@@ -48,8 +48,11 @@ def registerUser(request):
                 first_name=first_name, last_name=last_name, username=username, email=email, password=password)
             user.role = User.CUSTOMER
             user.save()
-            messages.success(
-                request, 'Your account has been registered sucessfully!')
+             # Send verification email
+            mail_subject = 'Please activate your account'
+            email_template = 'accounts/emails/account_verification_email.html'
+            send_verification_email(request, user, mail_subject, email_template)
+            messages.success(request, 'Your account has been registered sucessfully!')
             return redirect('registerUser')
         else:
             print('invalid form')
@@ -82,6 +85,10 @@ def registerVendor(request):
             user_profile = UserProfile.objects.get(user=user)
             vendor.user_profile = user_profile
             vendor.save()
+            # Send verification email
+            mail_subject = 'Please activate your account'
+            email_template = 'accounts/emails/account_verification_email.html'
+            send_verification_email(request, user, mail_subject, email_template)
             messages.success(
                 request, 'Your account has been registered sucessfully! Please wait for the approval.')
             return redirect('registerVendor')
@@ -144,6 +151,9 @@ def custDashboard(request):
 @user_passes_test(check_role_vendor)
 def vendorDashboard(request):
     return render(request, 'accounts/vendorDashboard.html')
+
+def activate(request, uidb64, token):
+    return
 
 
 def forgotPassword(request):
