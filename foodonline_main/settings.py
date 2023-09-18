@@ -117,7 +117,7 @@ STATICFILES_DIRS = [
     'foodonline_main/static'
 ]
 
-#media files config
+# media files config
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
