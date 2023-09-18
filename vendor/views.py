@@ -1,13 +1,26 @@
 from django.shortcuts import get_object_or_404, redirect, render
 
-from accounts.models import UserProfile
-from vendor.models import Vendor
-from .forms import VendorForm
 from accounts.form import UserProfileForm
+
+from accounts.models import UserProfile
+from vendor.forms import VendorForm
+from .models import Vendor
 from django.contrib import messages
+
+from django.contrib.auth.decorators import login_required, user_passes_test
+from accounts.views import check_role_vendor
+from menu.models import Category, FoodItem
+
 # Create your views here.
 
 
+def get_vendor(request):
+    vendor = Vendor.objects.get(user=request.user)
+    return vendor
+
+
+@login_required(login_url='login')
+@user_passes_test(check_role_vendor)
 def vprofile(request):
     profile = get_object_or_404(UserProfile, user=request.user)
     vendor = get_object_or_404(Vendor, user=request.user)
@@ -36,5 +49,33 @@ def vprofile(request):
     return render(request, 'vendor/vprofile.html', context)
 
 
+@login_required(login_url='login')
+@user_passes_test(check_role_vendor)
 def menu_builder(request):
-    return render(request, 'vendor/menu-builder.html')
+    vendor = get_vendor(request)
+    categories = Category.objects.filter(vendor=vendor).order_by('created_at')
+    context = {
+        'categories': categories,
+    }
+    return render(request, 'vendor/menu_builder.html', context)
+
+def fooditems_by_category(request, pk=None):
+    pass
+
+def add_category(request, pk=None):
+    pass
+
+def edit_category(request, pk=None):
+    pass
+
+def delete_category(request, pk=None):
+    pass
+
+def add_food(request, pk=None):
+    pass
+
+def edit_food(request, pk=None):
+    pass
+
+def delete_food(request, pk=None):
+    pass
