@@ -7,6 +7,8 @@ from accounts.utils import detectUser, send_verification_email
 from vendor.forms import VendorForm
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.exceptions import PermissionDenied
+from django.utils.http import urlsafe_base64_decode
+from django.contrib.auth.tokens import default_token_generator
 
 # Create your views here.
 
@@ -48,11 +50,13 @@ def registerUser(request):
                 first_name=first_name, last_name=last_name, username=username, email=email, password=password)
             user.role = User.CUSTOMER
             user.save()
-             # Send verification email
+            # Send verification email
             mail_subject = 'Please activate your account'
             email_template = 'accounts/emails/account_verification_email.html'
-            send_verification_email(request, user, mail_subject, email_template)
-            messages.success(request, 'Your account has been registered sucessfully!')
+            send_verification_email(
+                request, user, mail_subject, email_template)
+            messages.success(
+                request, 'Your account has been registered sucessfully!')
             return redirect('registerUser')
         else:
             print('invalid form')
@@ -88,7 +92,8 @@ def registerVendor(request):
             # Send verification email
             mail_subject = 'Please activate your account'
             email_template = 'accounts/emails/account_verification_email.html'
-            send_verification_email(request, user, mail_subject, email_template)
+            send_verification_email(
+                request, user, mail_subject, email_template)
             messages.success(
                 request, 'Your account has been registered sucessfully! Please wait for the approval.')
             return redirect('registerVendor')
@@ -136,24 +141,42 @@ def logout(request):
         messages.warning(request, 'You are not logged in!')
         return redirect('login')
 
+
 @login_required(login_url='login')
 def myAccount(request):
     user = request.user
     redirectUrl = detectUser(user)
     return redirect(redirectUrl)
 
+
 @login_required(login_url='login')
 @user_passes_test(check_role_customer)
 def custDashboard(request):
     return render(request, 'accounts/custDashboard.html')
+
 
 @login_required(login_url='login')
 @user_passes_test(check_role_vendor)
 def vendorDashboard(request):
     return render(request, 'accounts/vendorDashboard.html')
 
+
 def activate(request, uidb64, token):
-    return
+    # Activate the user by setting the is_active status to True
+    try:
+        uid = urlsafe_base64_decode(uidb64).decode()
+        user = User._default_manager.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+
+    if user is not None and default_token_generator.check_token(user, token):
+        user.is_active = True
+        user.save()
+        messages.success(request, 'Congratulation! Your account is activated.')
+        return redirect('myAccount')
+    else:
+        messages.error(request, 'Invalid activation link')
+        return redirect('myAccount')
 
 
 def forgotPassword(request):
