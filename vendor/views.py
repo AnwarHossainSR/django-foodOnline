@@ -32,7 +32,6 @@ def vprofile(request):
         'profile_form': profile_form,
         'vendor_form': vendor_form,
         'profile': profile,
-        'vendor': vendor,
     }
     return render(request, 'vendor/vprofile.html', context)
 
