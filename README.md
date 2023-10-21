@@ -3,7 +3,7 @@
 **Step 1: Clone the repository**
 
 ```
-git clone https://github.com/<username>/<project-name>.git
+git@github.com:AnwarHossainSR/django-foodOnline.git
 ```
 
 **Step 2: Install DJango if not installed in your system**
