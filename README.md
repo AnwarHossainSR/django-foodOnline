@@ -6,16 +6,22 @@
 git clone https://github.com/<username>/<project-name>.git
 ```
 
+**Step 2: Install DJango if not installed in your system**
+
+```
+pip install django
+```
+
 **Step 2: Create a virtual environment**
 
 ```
-python3 -m venv <venv-name>
+python3 -m venv venv
 ```
 
 **Step 3: Activate the virtual environment**
 
 ```
-source <venv-name>/bin/activate
+source venv/bin/activate
 ```
 
 **Step 4: Install the project's requirements**
@@ -27,7 +33,7 @@ pip install -r requirements.txt
 **Step 5: Create a new PostgreSQL database**
 
 ```
-createdb <database-name>
+createdb foodOnline_db
 ```
 
 **Step 6: Generate a new secret key**
